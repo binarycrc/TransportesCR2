@@ -15,7 +15,7 @@ namespace TransportesCR2
 
         public bool OpenData(string strType)
         {
-            try
+            try 
             {
                 if (strType == "sp") { commandData.CommandType = CommandType.StoredProcedure; }
                 else { commandData.CommandType = CommandType.Text; }
