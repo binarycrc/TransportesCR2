@@ -11,8 +11,19 @@ namespace TransportesCR2
     {
         public static SqlCommand commandData = new SqlCommand();
         public static SqlConnection sqlConnData = new SqlConnection();
-        public static string _DBConnectionString = "";
+        public string _LatestError = "";
+        public static string _ServerDataSource = "BINARYCRCD2x";
+        public static string _ServerInitialCatalog = "TransportesCR";
+        public static string _DBConnectionString = "Data Source=" + _ServerDataSource + ";Initial Catalog=" + _ServerInitialCatalog + ";Trusted_Connection=yes;";
 
+        public DataLayer() { }
+        public DataLayer(string ServerDataSource, string ServerInitialCatalog)
+        {
+            _ServerDataSource = ServerDataSource;
+            _ServerInitialCatalog = ServerInitialCatalog;
+            _DBConnectionString = "Data Source=" + _ServerDataSource + ";Initial Catalog=" + _ServerInitialCatalog + ";Trusted_Connection=yes;";
+        }
+        #region "Connection open and close"
         public bool OpenData(string strType)
         {
             try 
@@ -28,6 +39,7 @@ namespace TransportesCR2
             catch (Exception ex)
             {
                 //logger.LogError(ex, "datelayer.OpenData");
+                _LatestError = ex.Message;
                 return false;
             }
         }
@@ -63,5 +75,6 @@ namespace TransportesCR2
             }
             return result;
         }
+        #endregion //"Connection open and close"
     }
 }
