@@ -65,18 +65,12 @@ namespace TransportesCR2
 
         private void txtServerDataSource_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btnEntrar_Click(this, new EventArgs());
-            }
+            if (e.KeyCode == Keys.Enter){btnEntrar_Click(this, new EventArgs());}
         }
 
         private void txtServerInitialCatalog_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btnEntrar_Click(this, new EventArgs());
-            }
+            if (e.KeyCode == Keys.Enter){btnEntrar_Click(this, new EventArgs());}
         }
     }
 }

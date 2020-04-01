@@ -12,29 +12,51 @@ using System.Text;
 
 namespace TransportesCR2
 {
-    class Conductor : Empleado
+    class Conductor
     {
-        /// <summary>
-        /// Clase para el tipo de Empleado, Conductor
+        /// <summary> 3
+        /// Clase base para registro para tipos de empleados
         /// </summary>
-        int _ruta;
+        string _identificacion;
+        string _nombre;
+        string _papellido;
+        string _sapellido;
+        string _ruta;
         /// <summary>
-        /// Constructor de la clase Conductor con herencia de Empleado
+        /// Constructor de la clase Empleado
         /// </summary>
         /// <param name="identificacion"></param>
+        /// <param name="nombre"></param>
         /// <param name="papellido"></param>
         /// <param name="sapellido"></param>
-        public Conductor(string identificacion, string papellido, string sapellido)
-            : base(identificacion, papellido, sapellido)
+        public Conductor(string identificacion, string nombre, string papellido, string sapellido, string rutaasignada)
         {
+            _identificacion = identificacion;
+            _nombre = nombre;
+            _papellido = papellido;
+            _sapellido = sapellido;
+            _ruta = rutaasignada;
         }
+        /// <summary>
+        /// Propiedad para el campo identificacon
+        /// </summary>
+        public string Identificacion { get { return _identificacion; } set { _identificacion = value; } }
+        /// <summary>
+        /// Propiedad para el campo nombre
+        /// </summary>
+        public string Nombre { get { return _nombre; } set { _nombre = value; } }
+
+        /// <summary>
+        /// Propiedad para el cambpo primer apellido
+        /// </summary>
+        public string PApellido { get { return _papellido; } set { _papellido = value; } }
+        /// <summary>
+        /// Propiedad para el campo segundo apellido
+        /// </summary>
+        public string SApellido { get { return _sapellido; } set { _sapellido = value; } }
         /// <summary>
         /// Propiedad del campo ruta
         /// </summary>
-        public int ruta
-        {
-            get { return _ruta; }
-            set { _ruta = value; }
-        }
+        public string Ruta{ get { return _ruta; }set { _ruta = value; }}
     }
 }

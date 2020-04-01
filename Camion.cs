@@ -12,37 +12,60 @@ using System.Text;
 
 namespace TransportesCR2
 {
-    class Camion : Vehiculo
+    class Camion
     {
         /// <summary>
         /// Clase para el tipo de Vehiculo, Camion
         /// </summary>
-        int _capacidadkilos;
-        int _capacidadvolumen;
+        string _placa;
+        string _modelo;
+        string _marca;
+        string _capacidadkilos;
+        string _capacidadvolumen;
         /// <summary>
-        /// Constructor de la clase Camion con herencia de Vehiculo
+        /// Constructor de la clase Vehiculo
         /// </summary>
         /// <param name="placa"></param>
         /// <param name="modelo"></param>
-        public Camion(string placa, int modelo)
-            : base(placa, modelo)
+        /// <param name="marca"></param>
+        /// <param name="capacidadkilos"></param>
+        /// <param name="capacidadvolumen"></param>
+        public Camion(string placa, string modelo, string marca, string capacidadkilos, string capacidadvolumen)
         {
+            _placa= placa;
+            _modelo= modelo;
+            _marca = marca;
+            _capacidadkilos = capacidadkilos;
+            _capacidadvolumen= capacidadvolumen;
         }
+
+//[Placa] [varchar] (8) NOT NULL,
+//[AnnoModelo] [varchar] (4) NOT NULL,
+//[Marca] [varchar] (50) NOT NULL,
+//[CapacidadKG] [decimal](18, 2) NOT NULL,
+//[CapacidadVl] [decimal](18, 2) NOT NULL,
+
+        /// <summary>
+        /// Propiedad para el campo placa
+        /// </summary>
+        public string Placa { get { return _placa; } set { _placa = value; } }
+        /// <summary>
+        /// Propiedad para el campo Modelo
+        /// </summary>
+        public string Modelo { get { return _modelo; } set { _modelo = value; } }
+
+        /// <summary>
+        /// Propiedad para el campo Marca
+        /// </summary>
+        public string Marca { get { return _marca; } set { _marca = value; } }
+
         /// <summary>
         /// Propiedad del campo capacidad de kilos 
         /// </summary>
-        public int capacidadkilos
-        {
-            get { return _capacidadkilos; }
-            set { _capacidadkilos = value; }
-        }
+        public string capacidadkilos {get { return _capacidadkilos; }set { _capacidadkilos = value; }}
         /// <summary>
         /// Propiedad del campo capacidad de volumen
         /// </summary>
-        public int capacidadvolumen
-        {
-            get { return _capacidadvolumen; }
-            set { _capacidadvolumen = value; }
-        }
+        public string capacidadvolumen {get { return _capacidadvolumen; }set { _capacidadvolumen = value; }}
     }
 }
