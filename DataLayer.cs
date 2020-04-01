@@ -160,11 +160,11 @@ namespace TransportesCR2
             if (!string.IsNullOrEmpty(prmBuscar.Trim()))
             {
                 commandData = new System.Data.SqlClient.SqlCommand("SELECT [Identificacion],[Nombre],[PrimerApeliido],[SegundoApellido],[RutaAsignada] FROM [Conductor] with(nolock) " +
-                    "where Identificacion like '%@Identificacion%' " +
-                    "or Nombre like '%@Nombre%' " +
-                    "or PrimerApeliido like '%@PrimerApellido%' " +
-                    "or SegundoApellido like '%@SegundoApellido%' " +
-                    "or RutaAsignada like '%@RutaAsignada%' " +
+                    "where Identificacion like '%'+@Identificacion+'%' " +
+                    "or Nombre like '%'+@Nombre+'%' " +
+                    "or PrimerApeliido like '%'+@PrimerApellido+'%' " +
+                    "or SegundoApellido like '%'+@SegundoApellido+'%' " +
+                    "or RutaAsignada like '%'+@RutaAsignada+'%' " +
                     "order by Identificacion", sqlConnData);
                 commandData.Parameters.Add("@Identificacion", System.Data.SqlDbType.VarChar, 10);
                 commandData.Parameters["@Identificacion"].Value = prmBuscar.Trim();
@@ -259,12 +259,12 @@ namespace TransportesCR2
                 commandData.Parameters.Add("@CapacidadVl", System.Data.SqlDbType.Decimal);
                 commandData.Parameters["@CapacidadVl"].Value = Convert.ToDecimal(prmCapVolumen.Trim());
 
-                if (ExisteConductor(prmModelo) == false)
+                if (ExisteCamion(prmPlaca) == false)
                 {
                     OpenData("query");
                     commandData.ExecuteNonQuery();
                     CloseData();
-                    _LatestError = "Camion " + prmModelo.Trim() + " agregado satisfactoriamente.";
+                    _LatestError = "Camion " + prmPlaca.Trim() + " agregado satisfactoriamente.";
                     return true;
                 }
                 else
@@ -289,14 +289,14 @@ namespace TransportesCR2
             if (!string.IsNullOrEmpty(prmBuscar.Trim()))
             {
                commandData = new System.Data.SqlClient.SqlCommand("SELECT [Placa],[AnnoModelo],[Marca],[CapacidadKG],[CapacidadVl] FROM [Camion] with(nolock) " +
-                    "where Placa like '%@Placa%' " +
-                    "or AnnoModelo like '%@AnnoModelo%' " +
-                    "or Marca like '%@Marca%' " +
+                    "where Placa like '%'+@Placa+'%' " +
+                    "or AnnoModelo like '%'+@AnnoModelo+'%' " +
+                    "or Marca like '%'+@Marca+'%' " +
                     "order by Placa", sqlConnData);
                 commandData.Parameters.Add("@Placa", System.Data.SqlDbType.VarChar, 8);
                 commandData.Parameters["@Placa"].Value = prmBuscar.Trim();
                 commandData.Parameters.Add("@AnnoModelo", System.Data.SqlDbType.VarChar, 4);
-                commandData.Parameters["@NomAnnoModelobre"].Value = prmBuscar.Trim();
+                commandData.Parameters["@AnnoModelo"].Value = prmBuscar.Trim();
                 commandData.Parameters.Add("@Marca", System.Data.SqlDbType.VarChar, 50);
                 commandData.Parameters["@Marca"].Value = prmBuscar.Trim();
             }
@@ -318,6 +318,35 @@ namespace TransportesCR2
                         , reader["CapacidadVl"].ToString()
                         );
                     Camioniones.Add(camion.Placa, camion);
+                }
+                reader.Close();
+            }
+            CloseData();
+            return Camioniones;
+        }
+
+        public Dictionary<string, string> GetConductorxCamion(string prmBuscar, int prmAssigned)
+        {
+            SqlCommand commandData = new SqlCommand();
+            SqlDataReader reader;
+            Dictionary<string, string> Camioniones = new Dictionary<string, string>();
+            OpenData("query");
+            if (!string.IsNullOrEmpty(prmBuscar.Trim()))
+            {
+                commandData = new System.Data.SqlClient.SqlCommand("SELECT [Placa],Detalles= trim([Placa])+' / '+trim([Marca])+'('+trim([AnnoModelo])+') '+trim(convert(varchar,convert(decimal(8,2),[CapacidadKG]))) FROM [Camion] with(nolock) " +
+                     " ", sqlConnData);
+                //where Placa = @Placa 
+                commandData.Parameters.Add("@Placa", System.Data.SqlDbType.VarChar, 8);
+                commandData.Parameters["@Placa"].Value = prmBuscar.Trim();
+            }
+
+            commandData.CommandType = CommandType.Text;
+            reader = commandData.ExecuteReader(CommandBehavior.CloseConnection);
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Camioniones.Add(reader["Placa"].ToString(), reader["Detalles"].ToString());
                 }
                 reader.Close();
             }

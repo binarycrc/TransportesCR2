@@ -31,9 +31,9 @@
             this.tabMainForm = new System.Windows.Forms.TabControl();
             this.tabConductor = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnVerTodos = new System.Windows.Forms.Button();
-            this.btnBuscar = new System.Windows.Forms.Button();
-            this.txtBuscar = new System.Windows.Forms.TextBox();
+            this.btnVerConductores = new System.Windows.Forms.Button();
+            this.btnBuscarConductores = new System.Windows.Forms.Button();
+            this.txtBuscarConductores = new System.Windows.Forms.TextBox();
             this.gvConductores = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtRutaAsignada = new System.Windows.Forms.TextBox();
@@ -49,9 +49,9 @@
             this.lblCedula = new System.Windows.Forms.Label();
             this.tabCamiones = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.btnVerCamiones = new System.Windows.Forms.Button();
+            this.btnBuscarCamiones = new System.Windows.Forms.Button();
+            this.txtBuscarCamiones = new System.Windows.Forms.TextBox();
             this.gvCamiones = new System.Windows.Forms.DataGridView();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.cbMarca = new System.Windows.Forms.ComboBox();
@@ -69,6 +69,15 @@
             this.tabReportes = new System.Windows.Forms.TabPage();
             this.lblResultado = new System.Windows.Forms.Label();
             this.btnSalir = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.btnBuscarConductorxCamion = new System.Windows.Forms.Button();
+            this.txtBuscarConductorSeleccionado = new System.Windows.Forms.TextBox();
+            this.lblRutaSeleccionado = new System.Windows.Forms.Label();
+            this.lblPApellidoSeleccionado = new System.Windows.Forms.Label();
+            this.lblNombreSeleccionado = new System.Windows.Forms.Label();
+            this.txtIdentificacionSeleccionado = new System.Windows.Forms.Label();
+            this.listbUnassigned = new System.Windows.Forms.ListBox();
+            this.listbAssigned = new System.Windows.Forms.ListBox();
             this.tabMainForm.SuspendLayout();
             this.tabConductor.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -79,6 +88,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvCamiones)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numModelo)).BeginInit();
+            this.tabCamionesConductor.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabMainForm
@@ -92,8 +103,6 @@
             this.tabMainForm.SelectedIndex = 0;
             this.tabMainForm.Size = new System.Drawing.Size(785, 358);
             this.tabMainForm.TabIndex = 2;
-            this.tabMainForm.SelectedIndexChanged += new System.EventHandler(this.tabMainForm_SelectedIndexChanged);
-            this.tabMainForm.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabMainForm_Selected);
             // 
             // tabConductor
             // 
@@ -110,42 +119,42 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.btnVerTodos);
-            this.groupBox2.Controls.Add(this.btnBuscar);
-            this.groupBox2.Controls.Add(this.txtBuscar);
+            this.groupBox2.Controls.Add(this.btnVerConductores);
+            this.groupBox2.Controls.Add(this.btnBuscarConductores);
+            this.groupBox2.Controls.Add(this.txtBuscarConductores);
             this.groupBox2.Location = new System.Drawing.Point(6, 83);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(378, 38);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             // 
-            // btnVerTodos
+            // btnVerConductores
             // 
-            this.btnVerTodos.Location = new System.Drawing.Point(236, 9);
-            this.btnVerTodos.Name = "btnVerTodos";
-            this.btnVerTodos.Size = new System.Drawing.Size(75, 23);
-            this.btnVerTodos.TabIndex = 12;
-            this.btnVerTodos.Text = "Ver Todos";
-            this.btnVerTodos.UseVisualStyleBackColor = true;
-            this.btnVerTodos.Click += new System.EventHandler(this.btnVerTodos_Click);
+            this.btnVerConductores.Location = new System.Drawing.Point(236, 9);
+            this.btnVerConductores.Name = "btnVerConductores";
+            this.btnVerConductores.Size = new System.Drawing.Size(75, 23);
+            this.btnVerConductores.TabIndex = 12;
+            this.btnVerConductores.Text = "Ver Todos";
+            this.btnVerConductores.UseVisualStyleBackColor = true;
+            this.btnVerConductores.Click += new System.EventHandler(this.btnVerConductores_Click);
             // 
-            // btnBuscar
+            // btnBuscarConductores
             // 
-            this.btnBuscar.Location = new System.Drawing.Point(112, 10);
-            this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(75, 23);
-            this.btnBuscar.TabIndex = 11;
-            this.btnBuscar.Text = "Buscar";
-            this.btnBuscar.UseVisualStyleBackColor = true;
-            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
+            this.btnBuscarConductores.Location = new System.Drawing.Point(112, 10);
+            this.btnBuscarConductores.Name = "btnBuscarConductores";
+            this.btnBuscarConductores.Size = new System.Drawing.Size(118, 23);
+            this.btnBuscarConductores.TabIndex = 11;
+            this.btnBuscarConductores.Text = "Buscar Conductor";
+            this.btnBuscarConductores.UseVisualStyleBackColor = true;
+            this.btnBuscarConductores.Click += new System.EventHandler(this.btnBuscarConductores_Click);
             // 
-            // txtBuscar
+            // txtBuscarConductores
             // 
-            this.txtBuscar.Location = new System.Drawing.Point(6, 12);
-            this.txtBuscar.Name = "txtBuscar";
-            this.txtBuscar.Size = new System.Drawing.Size(100, 20);
-            this.txtBuscar.TabIndex = 10;
-            this.txtBuscar.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBuscar_KeyDown);
+            this.txtBuscarConductores.Location = new System.Drawing.Point(6, 12);
+            this.txtBuscarConductores.Name = "txtBuscarConductores";
+            this.txtBuscarConductores.Size = new System.Drawing.Size(100, 20);
+            this.txtBuscarConductores.TabIndex = 10;
+            this.txtBuscarConductores.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBuscarConductores_KeyDown);
             // 
             // gvConductores
             // 
@@ -279,39 +288,42 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.button1);
-            this.groupBox3.Controls.Add(this.button2);
-            this.groupBox3.Controls.Add(this.textBox1);
+            this.groupBox3.Controls.Add(this.btnVerCamiones);
+            this.groupBox3.Controls.Add(this.btnBuscarCamiones);
+            this.groupBox3.Controls.Add(this.txtBuscarCamiones);
             this.groupBox3.Location = new System.Drawing.Point(6, 83);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(378, 38);
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
             // 
-            // button1
+            // btnVerCamiones
             // 
-            this.button1.Location = new System.Drawing.Point(236, 9);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "Ver Todos";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnVerCamiones.Location = new System.Drawing.Point(236, 9);
+            this.btnVerCamiones.Name = "btnVerCamiones";
+            this.btnVerCamiones.Size = new System.Drawing.Size(75, 23);
+            this.btnVerCamiones.TabIndex = 12;
+            this.btnVerCamiones.Text = "Ver Todos";
+            this.btnVerCamiones.UseVisualStyleBackColor = true;
+            this.btnVerCamiones.Click += new System.EventHandler(this.btnVerCamiones_Click);
             // 
-            // button2
+            // btnBuscarCamiones
             // 
-            this.button2.Location = new System.Drawing.Point(112, 10);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 11;
-            this.button2.Text = "Buscar";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnBuscarCamiones.Location = new System.Drawing.Point(112, 10);
+            this.btnBuscarCamiones.Name = "btnBuscarCamiones";
+            this.btnBuscarCamiones.Size = new System.Drawing.Size(118, 23);
+            this.btnBuscarCamiones.TabIndex = 11;
+            this.btnBuscarCamiones.Text = "Buscar Camion";
+            this.btnBuscarCamiones.UseVisualStyleBackColor = true;
+            this.btnBuscarCamiones.Click += new System.EventHandler(this.btnBuscarCamiones_Click);
             // 
-            // textBox1
+            // txtBuscarCamiones
             // 
-            this.textBox1.Location = new System.Drawing.Point(6, 12);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 10;
+            this.txtBuscarCamiones.Location = new System.Drawing.Point(6, 12);
+            this.txtBuscarCamiones.Name = "txtBuscarCamiones";
+            this.txtBuscarCamiones.Size = new System.Drawing.Size(100, 20);
+            this.txtBuscarCamiones.TabIndex = 10;
+            this.txtBuscarCamiones.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBuscarCamiones_KeyDown);
             // 
             // gvCamiones
             // 
@@ -344,121 +356,120 @@
             // 
             this.cbMarca.FormattingEnabled = true;
             this.cbMarca.Items.AddRange(new object[] {
-            "",
-            "Acura\t",
+            "Acura",
             "Alfa Romeo",
-            "AMC\t",
-            "Aro\t",
-            "Asia\t",
+            "AMC",
+            "Aro",
+            "Asia",
             "Aston Martin",
-            "Audi\t",
-            "Austin\t",
-            "Baw\t",
-            "Bentley\t",
-            "Bluebird\t",
-            "BMW\t",
-            "Brilliance\t",
-            "Buick\t",
-            "BYD\t",
-            "Cadillac\t",
-            "Chana\t",
-            "Changan\t",
-            "Chery\t",
-            "Chevrolet\t",
-            "Chrysler\t",
-            "Citroen\t",
-            "Dacia\t",
-            "Daewoo\t",
-            "Daihatsu\t",
-            "Datsun\t",
-            "Dodge/RAM\t",
+            "Audi",
+            "Austin",
+            "Baw",
+            "Bentley",
+            "Bluebird",
+            "BMW",
+            "Brilliance",
+            "Buick",
+            "BYD",
+            "Cadillac",
+            "Chana",
+            "Changan",
+            "Chery",
+            "Chevrolet",
+            "Chrysler",
+            "Citroen",
+            "Dacia",
+            "Daewoo",
+            "Daihatsu",
+            "Datsun",
+            "Dodge/RAM",
             "Donfeng (ZNA)",
-            "Eagle\t",
-            "Faw\t",
-            "Ferrari\t",
-            "Fiat\t",
-            "Ford\t",
-            "Foton\t",
-            "Freightliner\t",
-            "Geely\t",
-            "Genesis\t",
-            "Geo\t",
-            "GMC\t",
-            "Gonow\t",
+            "Eagle",
+            "Faw",
+            "Ferrari",
+            "Fiat",
+            "Ford",
+            "Foton",
+            "Freightliner",
+            "Geely",
+            "Genesis",
+            "Geo",
+            "GMC",
+            "Gonow",
             "Great Wall",
-            "Hafei\t",
-            "Haima\t",
-            "Heibao\t",
-            "Higer\t",
-            "Hino\t",
-            "Honda\t",
-            "Hummer\t",
-            "Hyundai\t",
-            "Infiniti\t",
-            "International\t",
-            "Isuzu\t",
-            "Iveco\t",
-            "JAC\t",
-            "Jaguar\t",
-            "Jeep\t",
-            "Jinbei\t",
-            "JMC\t",
-            "Jonway\t",
-            "Kenworth\t",
-            "Kia\t",
-            "Lada\t",
-            "Lamborghini\t",
-            "Lancia\t",
+            "Hafei",
+            "Haima",
+            "Heibao",
+            "Higer",
+            "Hino",
+            "Honda",
+            "Hummer",
+            "Hyundai",
+            "Infiniti",
+            "International",
+            "Isuzu",
+            "Iveco",
+            "JAC",
+            "Jaguar",
+            "Jeep",
+            "Jinbei",
+            "JMC",
+            "Jonway",
+            "Kenworth",
+            "Kia",
+            "Lada",
+            "Lamborghini",
+            "Lancia",
             "Land Rover",
-            "Lexus\t",
-            "Lifan\t",
-            "Lincoln\t",
-            "Lotus\t",
-            "Mack\t",
-            "Magiruz\t",
-            "Mahindra\t",
-            "Maserati\t",
-            "Mazda\t",
+            "Lexus",
+            "Lifan",
+            "Lincoln",
+            "Lotus",
+            "Mack",
+            "Magiruz",
+            "Mahindra",
+            "Maserati",
+            "Mazda",
             "Mercedes Benz",
-            "Mercury\t",
-            "MG\t",
-            "Mini\t",
+            "Mercury",
+            "MG",
+            "Mini",
             "Mitsubishi\t",
-            "Nissan\t",
-            "Oldsmobile\t",
-            "Opel\t",
-            "Peterbilt\t",
-            "Peugeot\t",
-            "Plymouth\t",
-            "Polarsun\t",
-            "Pontiac\t",
-            "Porsche\t",
-            "Proton\t",
-            "Rambler\t",
-            "Renault\t",
-            "Reva\t",
+            "Nissan",
+            "Oldsmobile",
+            "Opel",
+            "Peterbilt",
+            "Peugeot",
+            "Plymouth",
+            "Polarsun",
+            "Pontiac",
+            "Porsche",
+            "Proton",
+            "Rambler",
+            "Renault",
+            "Reva",
             "Rolls Royce",
-            "Rover\t",
-            "Saab\t",
-            "Samsung\t",
-            "Saturn\t",
-            "Scania\t",
-            "Scion\t",
-            "Seat\t",
-            "Skoda\t",
-            "Smart\t",
-            "Soueast\t",
+            "Rover",
+            "Saab",
+            "Samsung",
+            "Saturn",
+            "Scania",
+            "Scion",
+            "Seat",
+            "Skoda",
+            "Smart",
+            "Soueast",
             "Ssang Yong",
-            "Subaru\t",
-            "Suzuki\t",
-            "Tianma\t",
+            "Subaru",
+            "Suzuki",
+            "Tianma",
             "Tiger Truck",
-            "Toyota\t",
-            "Volkswagen\t",
-            "Volvo\t",
+            "Toyota",
+            "Volkswagen",
+            "Volvo",
             "Western Star",
-            "Yugo\t",
-            "Zotye\t"});
+            "Yugo",
+            "Zotye"});
             this.cbMarca.Location = new System.Drawing.Point(236, 13);
             this.cbMarca.Name = "cbMarca";
             this.cbMarca.Size = new System.Drawing.Size(100, 21);
@@ -567,6 +578,9 @@
             // 
             // tabCamionesConductor
             // 
+            this.tabCamionesConductor.Controls.Add(this.listbAssigned);
+            this.tabCamionesConductor.Controls.Add(this.listbUnassigned);
+            this.tabCamionesConductor.Controls.Add(this.groupBox5);
             this.tabCamionesConductor.Location = new System.Drawing.Point(4, 22);
             this.tabCamionesConductor.Name = "tabCamionesConductor";
             this.tabCamionesConductor.Padding = new System.Windows.Forms.Padding(3);
@@ -605,6 +619,86 @@
             this.btnSalir.UseVisualStyleBackColor = true;
             this.btnSalir.Click += new System.EventHandler(this.btnSalir_Click);
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.lblRutaSeleccionado);
+            this.groupBox5.Controls.Add(this.lblPApellidoSeleccionado);
+            this.groupBox5.Controls.Add(this.lblNombreSeleccionado);
+            this.groupBox5.Controls.Add(this.txtIdentificacionSeleccionado);
+            this.groupBox5.Controls.Add(this.btnBuscarConductorxCamion);
+            this.groupBox5.Controls.Add(this.txtBuscarConductorSeleccionado);
+            this.groupBox5.Location = new System.Drawing.Point(6, 3);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(563, 93);
+            this.groupBox5.TabIndex = 4;
+            this.groupBox5.TabStop = false;
+            // 
+            // btnBuscarConductorxCamion
+            // 
+            this.btnBuscarConductorxCamion.Location = new System.Drawing.Point(112, 10);
+            this.btnBuscarConductorxCamion.Name = "btnBuscarConductorxCamion";
+            this.btnBuscarConductorxCamion.Size = new System.Drawing.Size(116, 23);
+            this.btnBuscarConductorxCamion.TabIndex = 11;
+            this.btnBuscarConductorxCamion.Text = "Buscar Conductor";
+            this.btnBuscarConductorxCamion.UseVisualStyleBackColor = true;
+            this.btnBuscarConductorxCamion.Click += new System.EventHandler(this.btnBuscarConductorxCamion_Click);
+            // 
+            // txtBuscarConductorSeleccionado
+            // 
+            this.txtBuscarConductorSeleccionado.Location = new System.Drawing.Point(6, 12);
+            this.txtBuscarConductorSeleccionado.Name = "txtBuscarConductorSeleccionado";
+            this.txtBuscarConductorSeleccionado.Size = new System.Drawing.Size(100, 20);
+            this.txtBuscarConductorSeleccionado.TabIndex = 10;
+            // 
+            // lblRutaSeleccionado
+            // 
+            this.lblRutaSeleccionado.AutoSize = true;
+            this.lblRutaSeleccionado.Location = new System.Drawing.Point(9, 64);
+            this.lblRutaSeleccionado.Name = "lblRutaSeleccionado";
+            this.lblRutaSeleccionado.Size = new System.Drawing.Size(0, 13);
+            this.lblRutaSeleccionado.TabIndex = 1003;
+            // 
+            // lblPApellidoSeleccionado
+            // 
+            this.lblPApellidoSeleccionado.AutoSize = true;
+            this.lblPApellidoSeleccionado.Location = new System.Drawing.Point(192, 42);
+            this.lblPApellidoSeleccionado.Name = "lblPApellidoSeleccionado";
+            this.lblPApellidoSeleccionado.Size = new System.Drawing.Size(0, 13);
+            this.lblPApellidoSeleccionado.TabIndex = 1002;
+            // 
+            // lblNombreSeleccionado
+            // 
+            this.lblNombreSeleccionado.AutoSize = true;
+            this.lblNombreSeleccionado.Location = new System.Drawing.Point(82, 42);
+            this.lblNombreSeleccionado.Name = "lblNombreSeleccionado";
+            this.lblNombreSeleccionado.Size = new System.Drawing.Size(0, 13);
+            this.lblNombreSeleccionado.TabIndex = 1001;
+            // 
+            // txtIdentificacionSeleccionado
+            // 
+            this.txtIdentificacionSeleccionado.AutoSize = true;
+            this.txtIdentificacionSeleccionado.Location = new System.Drawing.Point(9, 42);
+            this.txtIdentificacionSeleccionado.Name = "txtIdentificacionSeleccionado";
+            this.txtIdentificacionSeleccionado.Size = new System.Drawing.Size(0, 13);
+            this.txtIdentificacionSeleccionado.TabIndex = 1004;
+            // 
+            // listbUnassigned
+            // 
+            this.listbUnassigned.FormattingEnabled = true;
+            this.listbUnassigned.Location = new System.Drawing.Point(6, 102);
+            this.listbUnassigned.Name = "listbUnassigned";
+            this.listbUnassigned.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.listbUnassigned.Size = new System.Drawing.Size(144, 95);
+            this.listbUnassigned.TabIndex = 5;
+            // 
+            // listbAssigned
+            // 
+            this.listbAssigned.FormattingEnabled = true;
+            this.listbAssigned.Location = new System.Drawing.Point(201, 102);
+            this.listbAssigned.Name = "listbAssigned";
+            this.listbAssigned.Size = new System.Drawing.Size(144, 95);
+            this.listbAssigned.TabIndex = 6;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -631,6 +725,9 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numModelo)).EndInit();
+            this.tabCamionesConductor.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -640,8 +737,8 @@
         private System.Windows.Forms.TabControl tabMainForm;
         private System.Windows.Forms.TabPage tabConductor;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button btnBuscar;
-        private System.Windows.Forms.TextBox txtBuscar;
+        private System.Windows.Forms.Button btnBuscarConductores;
+        private System.Windows.Forms.TextBox txtBuscarConductores;
         private System.Windows.Forms.DataGridView gvConductores;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnGuardarConductor;
@@ -657,11 +754,11 @@
         private System.Windows.Forms.Label lblResultado;
         private System.Windows.Forms.TextBox txtRutaAsignada;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button btnVerTodos;
+        private System.Windows.Forms.Button btnVerConductores;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button btnVerCamiones;
+        private System.Windows.Forms.Button btnBuscarCamiones;
+        private System.Windows.Forms.TextBox txtBuscarCamiones;
         private System.Windows.Forms.DataGridView gvCamiones;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.ComboBox cbMarca;
@@ -678,6 +775,15 @@
         private System.Windows.Forms.TabPage tabCamionesConductor;
         private System.Windows.Forms.TabPage tabReportes;
         private System.Windows.Forms.Button btnSalir;
+        private System.Windows.Forms.ListBox listbAssigned;
+        private System.Windows.Forms.ListBox listbUnassigned;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Label lblRutaSeleccionado;
+        private System.Windows.Forms.Label lblPApellidoSeleccionado;
+        private System.Windows.Forms.Label lblNombreSeleccionado;
+        private System.Windows.Forms.Label txtIdentificacionSeleccionado;
+        private System.Windows.Forms.Button btnBuscarConductorxCamion;
+        private System.Windows.Forms.TextBox txtBuscarConductorSeleccionado;
     }
 }
 

@@ -19,7 +19,11 @@ namespace TransportesCR2
         {
             InitializeComponent();
         }
-
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            CargaGridConductores("");
+            CargaGridCamiones("");
+        }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
@@ -34,95 +38,12 @@ namespace TransportesCR2
             if (e.KeyChar == '.' && txtDecimal.Text.Contains("."))
             {e.Handled = true;}
         }
-        private void btnBuscar_Click(object sender, EventArgs e)
-        {
-            Cursor.Current = Cursors.WaitCursor;
-            try
-            {
-                if ((string.IsNullOrEmpty(txtBuscar.Text)) || (string.IsNullOrWhiteSpace(txtBuscar.Text)))
-                {
-                    lblResultado.Text = "Valores en formato incorrecto o nulos";
-                }
-                else
-                {
-                    CargaGrid(txtBuscar.Text);
-                    lblResultado.Text = datalayer._LatestError;
-                    datalayer._LatestError = "";
-                }
-            }
-            catch (Exception ex)
-            {
-                lblResultado.Text = ex.Message;
-                throw;
-            }
-            Cursor.Current = Cursors.Default;
-        }
-
-        private void txtBuscar_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter){btnBuscar_Click(this, new EventArgs());}
-        }
-        private void CargaGrid(string prmBuscar)
-        {
-            Dictionary<string, Conductor> Conductores = new Dictionary<string, Conductor>();
-            gvConductores.DataSource = null;
-            try
-            {
-                Conductores = datalayer.GetConductores(prmBuscar);
-                gvConductores.DataSource = Conductores.Values.ToList();
-            }
-            catch (Exception ex)
-            {
-                lblResultado.Text = ex.Message;
-                throw;
-            }
-        }
-        private void LimpiaBoxes()
-        {
-            txtCedula.Text = "";
-            txtNombre.Text = "";
-            txtApellido1.Text = "";
-            txtApellido2.Text = "";
-            txtRutaAsignada.Text = "";
-        }
-        
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            CargaGrid("");
-        }
-
-        private void btnVerTodos_Click(object sender, EventArgs e)
-        {
-            CargaGrid("");
-        }
-
-        private void txtCapKilos_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            soloNumerosConPunto(sender, e);
-        }
-
         private void btnSalir_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void txtCapVolumen_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            soloNumerosConPunto(sender, e);
-        }
-
-        private void tabMainForm_Selected(object sender, TabControlEventArgs e)
-        {
-
-        }
-
-        private void tabMainForm_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tabMainForm.TabIndex == 0) { txtCedula.Select(txtCedula.Text.Length, 0); }
-            //if (tabMainForm.TabIndex == tabMainForm.TabPages["tabConductores"]){ this.ActiveControl = txtCedula; }
-        }
-
+        #region "Conductores"
         private void btnGuardarConductor_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
@@ -148,8 +69,8 @@ namespace TransportesCR2
                     {
                         lblResultado.Text = datalayer._LatestError;
                         datalayer._LatestError = "";
-                        LimpiaBoxes();
-                        CargaGrid("");
+                        LimpiaBoxesConductores();
+                        CargaGridConductores("");
                     }
                 }
             }
@@ -160,7 +81,64 @@ namespace TransportesCR2
             }
             Cursor.Current = Cursors.Default;
         }
+        private void CargaGridConductores(string prmBuscar)
+        {
+            Dictionary<string, Conductor> Conductores = new Dictionary<string, Conductor>();
+            gvConductores.DataSource = null;
+            try
+            {
+                Conductores = datalayer.GetConductores(prmBuscar);
+                gvConductores.DataSource = Conductores.Values.ToList();
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message;
+                throw;
+            }
+        }
+        private void LimpiaBoxesConductores()
+        {
+            txtCedula.Text = "";
+            txtNombre.Text = "";
+            txtApellido1.Text = "";
+            txtApellido2.Text = "";
+            txtRutaAsignada.Text = "";
+        }
+        private void btnBuscarConductores_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                if ((string.IsNullOrEmpty(txtBuscarConductores.Text)) || (string.IsNullOrWhiteSpace(txtBuscarConductores.Text)))
+                {
+                    lblResultado.Text = "Valores en formato incorrecto o nulos";
+                }
+                else
+                {
+                    CargaGridConductores(txtBuscarConductores.Text);
+                    lblResultado.Text = datalayer._LatestError;
+                    datalayer._LatestError = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message;
+                throw;
+            }
+            Cursor.Current = Cursors.Default;
+        }
+        private void txtBuscarConductores_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter){ btnBuscarConductores_Click(this, new EventArgs());}
+        }
+        private void btnVerConductores_Click(object sender, EventArgs e)
+        {
+            CargaGridConductores("");
+        }
 
+        #endregion //"Conductores"
+
+        #region "Camiones"
         private void btnGuardaCamion_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
@@ -169,7 +147,7 @@ namespace TransportesCR2
                 if (
                        (string.IsNullOrEmpty(txtPlaca.Text)) || (string.IsNullOrWhiteSpace(txtPlaca.Text))
                     || (string.IsNullOrEmpty(numModelo.Text)) || (string.IsNullOrWhiteSpace(numModelo.Text))
-                    || (string.IsNullOrEmpty(cbMarca.SelectedText)) || (string.IsNullOrWhiteSpace(cbMarca.SelectedText))
+                    || (string.IsNullOrEmpty(cbMarca.SelectedItem.ToString())) || (string.IsNullOrWhiteSpace(cbMarca.SelectedItem.ToString()))
                     || (string.IsNullOrEmpty(txtCapKilos.Text)) || (string.IsNullOrWhiteSpace(txtCapKilos.Text))
                     || (string.IsNullOrEmpty(txtCapVolumen.Text)) || (string.IsNullOrWhiteSpace(txtCapVolumen.Text))
                     )
@@ -178,7 +156,7 @@ namespace TransportesCR2
                 }
                 else
                 {
-                    if (!datalayer.GuardaCamion(txtPlaca.Text, numModelo.Text, cbMarca.SelectedText, txtCapKilos.Text, txtCapVolumen.Text))
+                    if (!datalayer.GuardaCamion(txtPlaca.Text, numModelo.Text, cbMarca.SelectedItem.ToString(), txtCapKilos.Text, txtCapVolumen.Text))
                     {
                         lblResultado.Text = datalayer._LatestError;
                     }
@@ -186,8 +164,8 @@ namespace TransportesCR2
                     {
                         lblResultado.Text = datalayer._LatestError;
                         datalayer._LatestError = "";
-                        LimpiaBoxes();
-                        CargaGrid("");
+                        LimpiaBoxesCamiones();
+                        CargaGridConductores("");
                     }
                 }
             }
@@ -197,6 +175,108 @@ namespace TransportesCR2
                 throw;
             }
             Cursor.Current = Cursors.Default;
+        }
+        private void CargaGridCamiones(string prmBuscar)
+        {
+            Dictionary<string, Camion> Camiones = new Dictionary<string, Camion>();
+            gvCamiones.DataSource = null;
+            try
+            {
+                Camiones = datalayer.GetCamiones(prmBuscar);
+                gvCamiones.DataSource = Camiones.Values.ToList();
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message;
+                throw;
+            }
+        }
+        private void LimpiaBoxesCamiones()
+        {
+            txtPlaca.Text = "";
+            txtCapKilos.Text = "";
+            txtCapVolumen.Text = "";
+        }
+        private void btnBuscarCamiones_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                if ((string.IsNullOrEmpty(txtBuscarCamiones.Text)) || (string.IsNullOrWhiteSpace(txtBuscarCamiones.Text)))
+                {
+                    lblResultado.Text = "Valores en formato incorrecto o nulos";
+                }
+                else
+                {
+                    CargaGridCamiones(txtBuscarCamiones.Text);
+                    lblResultado.Text = datalayer._LatestError;
+                    datalayer._LatestError = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message;
+                throw;
+            }
+            Cursor.Current = Cursors.Default;
+        }
+        private void txtBuscarCamiones_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) { btnBuscarCamiones_Click(this, new EventArgs()); }
+        }
+        private void btnVerCamiones_Click(object sender, EventArgs e)
+        {
+            CargaGridCamiones("");
+        }
+        private void txtCapKilos_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            soloNumerosConPunto(sender, e);
+        }
+        private void txtCapVolumen_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            soloNumerosConPunto(sender, e);
+        }
+        #endregion //"Camiones"
+
+        private void btnBuscarConductorxCamion_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                if ((string.IsNullOrEmpty(txtBuscarConductorSeleccionado.Text)) || (string.IsNullOrWhiteSpace(txtBuscarConductorSeleccionado.Text)))
+                {
+                    lblResultado.Text = "Valores en formato incorrecto o nulos";
+                }
+                else
+                {
+                    CargaListbConductorxCamion(txtBuscarConductorSeleccionado.Text, 0);
+                    lblResultado.Text = datalayer._LatestError;
+                    datalayer._LatestError = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message;
+                throw;
+            }
+            Cursor.Current = Cursors.Default;
+        }
+        private void CargaListbConductorxCamion(string prmBuscar, int prmAssigned)
+        {
+            Dictionary<string, string> Camiones = new Dictionary<string, string>();
+            listbUnassigned.Items.Clear();
+            try
+            {
+                Camiones = datalayer.GetConductorxCamion(prmBuscar, prmAssigned);
+                listbUnassigned.DataSource = new BindingSource(Camiones, null);
+                listbUnassigned.DisplayMember = "Value";
+                listbUnassigned.ValueMember = "Key";
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message;
+                throw;
+            }
         }
     }
 }
