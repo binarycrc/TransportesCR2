@@ -164,7 +164,12 @@
             // 
             // gvConductores
             // 
+            this.gvConductores.AllowUserToAddRows = false;
+            this.gvConductores.AllowUserToDeleteRows = false;
+            this.gvConductores.AllowUserToResizeColumns = false;
+            this.gvConductores.AllowUserToResizeRows = false;
             this.gvConductores.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvConductores.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.gvConductores.Location = new System.Drawing.Point(6, 127);
             this.gvConductores.Name = "gvConductores";
             this.gvConductores.Size = new System.Drawing.Size(573, 196);
@@ -340,7 +345,12 @@
             // 
             // gvCamiones
             // 
+            this.gvCamiones.AllowUserToAddRows = false;
+            this.gvCamiones.AllowUserToDeleteRows = false;
+            this.gvCamiones.AllowUserToResizeColumns = false;
+            this.gvCamiones.AllowUserToResizeRows = false;
             this.gvCamiones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvCamiones.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.gvCamiones.Location = new System.Drawing.Point(6, 127);
             this.gvCamiones.Name = "gvCamiones";
             this.gvCamiones.Size = new System.Drawing.Size(573, 196);
