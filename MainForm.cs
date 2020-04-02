@@ -134,6 +134,7 @@ namespace TransportesCR2
         private void btnVerConductores_Click(object sender, EventArgs e)
         {
             CargaGridConductores("");
+            txtBuscarConductores.Text = "";
         }
         #endregion //"Conductores"
 
@@ -164,7 +165,7 @@ namespace TransportesCR2
                         lblResultado.Text = datalayer._LatestError;
                         datalayer._LatestError = "";
                         LimpiaBoxesCamiones();
-                        CargaGridConductores("");
+                        CargaGridCamiones("");
                     }
                 }
             }
@@ -226,6 +227,7 @@ namespace TransportesCR2
         private void btnVerCamiones_Click(object sender, EventArgs e)
         {
             CargaGridCamiones("");
+            txtBuscarCamiones.Text = "";
         }
         private void txtCapKilos_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -236,6 +238,8 @@ namespace TransportesCR2
             soloNumerosConPunto(sender, e);
         }
         #endregion //"Camiones"
+
+        #region "ConductorxCamion"
         private void CargaConductorxCamion(string prmBuscar)
         {
             Dictionary<string, Conductor> Conductores = new Dictionary<string, Conductor>();
@@ -245,7 +249,7 @@ namespace TransportesCR2
             lblRutaSeleccionado.Text = "";
             try
             {
-                Conductores = datalayer.GetConductores(prmBuscar);
+                Conductores = datalayer.GetConductorxCamion(prmBuscar);
                 //gvConductores.DataSource = Conductores.Values.ToList();
                 foreach (Conductor conductor in Conductores.Values)
                 {
@@ -265,6 +269,14 @@ namespace TransportesCR2
         private void btnBuscarConductorxCamion_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
+            lblIdentificacionSeleccionado.Text = "";
+            lblNombreSeleccionado.Text = "";
+            lblPApellidoSeleccionado.Text = "";
+            lblRutaSeleccionado.Text = "";
+            listbUnassigned.Items.Clear();
+            listbAssigned.Items.Clear();
+            btnGuardarConductorxCamion.Font = new Font(btnGuardarConductorxCamion.Font.Name, btnGuardarConductorxCamion.Font.Size, FontStyle.Regular);
+            btnGuardarConductorxCamion.ForeColor = System.Drawing.Color.Black;
             try
             {
                 if ((string.IsNullOrEmpty(txtBuscarConductorSeleccionado.Text)) || (string.IsNullOrWhiteSpace(txtBuscarConductorSeleccionado.Text)))
@@ -274,7 +286,7 @@ namespace TransportesCR2
                 else
                 {
                     CargaConductorxCamion(txtBuscarConductorSeleccionado.Text);
-                    CargaListbConductorxCamion(txtBuscarConductorSeleccionado.Text, 0);
+                    CargaListbConductorxCamion(txtBuscarConductorSeleccionado.Text);
                     lblResultado.Text = datalayer._LatestError;
                     datalayer._LatestError = "";
                 }
@@ -286,21 +298,29 @@ namespace TransportesCR2
             }
             Cursor.Current = Cursors.Default;
         }
-        private void CargaListbConductorxCamion(string prmBuscar, int prmAssigned)
+        private void CargaListbConductorxCamion(string prmBuscar)
         {
             Dictionary<string, string> Camiones = new Dictionary<string, string>();
             listbUnassigned.Items.Clear();
+            listbAssigned.Items.Clear();
             try
             {
-                Camiones = datalayer.GetConductorxCamion(prmBuscar, prmAssigned);
+                Camiones = datalayer.GetConductorxCamion(prmBuscar, 0);
+                foreach (var camion in Camiones.ToArray())
+                {
+                    listbUnassigned.Items.Add(camion.Value.Trim());
+                }
+                Camiones = datalayer.GetConductorxCamion(prmBuscar, 1);
+                foreach (var camion in Camiones.ToArray())
+                {
+                    listbAssigned.Items.Add(camion.Value.Trim());
+                }
+                btnGuardarConductorxCamion.Font = new Font(btnGuardarConductorxCamion.Font.Name, btnGuardarConductorxCamion.Font.Size, FontStyle.Regular);
+                btnGuardarConductorxCamion.ForeColor = System.Drawing.Color.Black;
                 //listbUnassigned.DataSource = new BindingSource(Camiones, null);
                 //listbUnassigned.DisplayMember = "Value";
                 //listbUnassigned.ValueMember = "Key";
 
-                foreach (var kvp in Camiones.ToArray())
-                {
-                    listbUnassigned.Items.Add(kvp.Value.Trim());
-                }
             }
             catch (Exception ex)
             {
@@ -352,20 +372,15 @@ namespace TransportesCR2
                 btnGuardarConductorxCamion.ForeColor = System.Drawing.Color.Red;
             }
         }
-
         private void btnGuardarConductorxCamion_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
             try
             {
+                datalayer.BorrarConductorxCamion(lblIdentificacionSeleccionado.Text.Trim());
                 for (int i = 0; i < listbAssigned.Items.Count; i++)
                 {
-                    if (listbAssigned.GetSelected(i))
-                    {
-                        listbUnassigned.Items.Add(listbAssigned.Items[i]);
-                    }
-                }
-                if (!datalayer.GuardaConductorxCamion(txtCedula.Text, txtNombre.Text, txtApellido1.Text, txtApellido2.Text, txtRutaAsignada.Text))
+                    if (!datalayer.GuardaConductorxCamion(lblIdentificacionSeleccionado.Text.Trim(), listbAssigned.Items[i].ToString().Split('/')[0].Trim()))
                     {
                         lblResultado.Text = datalayer._LatestError;
                     }
@@ -374,6 +389,7 @@ namespace TransportesCR2
                         lblResultado.Text = datalayer._LatestError;
                         datalayer._LatestError = "";
                     }
+                }
             }
             catch (Exception ex)
             {
@@ -381,6 +397,25 @@ namespace TransportesCR2
                 throw;
             }
             Cursor.Current = Cursors.Default;
+            btnGuardarConductorxCamion.Font = new Font(btnGuardarConductorxCamion.Font.Name, btnGuardarConductorxCamion.Font.Size, FontStyle.Regular);
+            btnGuardarConductorxCamion.ForeColor = System.Drawing.Color.Black;
+
         }
+        private void txtBuscarConductorSeleccionado_KeyDown(object sender, KeyEventArgs e)
+        {
+            lblIdentificacionSeleccionado.Text = "";
+            lblNombreSeleccionado.Text = "";
+            lblPApellidoSeleccionado.Text = "";
+            lblRutaSeleccionado.Text = "";
+            btnGuardarConductorxCamion.Font = new Font(btnGuardarConductorxCamion.Font.Name, btnGuardarConductorxCamion.Font.Size, FontStyle.Regular);
+            btnGuardarConductorxCamion.ForeColor = System.Drawing.Color.Black;
+            listbUnassigned.Items.Clear();
+            listbAssigned.Items.Clear();
+
+            if (e.KeyCode == Keys.Enter) { btnBuscarConductorxCamion_Click(this, new EventArgs()); }
+        }
+        #endregion //"ConductorxCamion"
+
+
     }
 }

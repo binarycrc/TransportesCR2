@@ -75,13 +75,14 @@
             this.lblIdentificacionSeleccionado = new System.Windows.Forms.Label();
             this.btnBuscarConductorxCamion = new System.Windows.Forms.Button();
             this.txtBuscarConductorSeleccionado = new System.Windows.Forms.TextBox();
-            this.tabReportes = new System.Windows.Forms.TabPage();
             this.lblResultado = new System.Windows.Forms.Label();
             this.btnSalir = new System.Windows.Forms.Button();
             this.btnMoverDerecha = new System.Windows.Forms.Button();
             this.btnMoverIzquierda = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.btnGuardarConductorxCamion = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.tabMainForm.SuspendLayout();
             this.tabConductor.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -101,7 +102,6 @@
             this.tabMainForm.Controls.Add(this.tabConductor);
             this.tabMainForm.Controls.Add(this.tabCamiones);
             this.tabMainForm.Controls.Add(this.tabCamionesConductor);
-            this.tabMainForm.Controls.Add(this.tabReportes);
             this.tabMainForm.Location = new System.Drawing.Point(3, 4);
             this.tabMainForm.Name = "tabMainForm";
             this.tabMainForm.SelectedIndex = 0;
@@ -116,25 +116,26 @@
             this.tabConductor.Location = new System.Drawing.Point(4, 22);
             this.tabConductor.Name = "tabConductor";
             this.tabConductor.Padding = new System.Windows.Forms.Padding(3);
-            this.tabConductor.Size = new System.Drawing.Size(777, 332);
+            this.tabConductor.Size = new System.Drawing.Size(608, 332);
             this.tabConductor.TabIndex = 0;
             this.tabConductor.Text = "1. Conductor";
             this.tabConductor.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.btnVerConductores);
             this.groupBox2.Controls.Add(this.btnBuscarConductores);
             this.groupBox2.Controls.Add(this.txtBuscarConductores);
             this.groupBox2.Location = new System.Drawing.Point(6, 83);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(378, 38);
+            this.groupBox2.Size = new System.Drawing.Size(573, 38);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             // 
             // btnVerConductores
             // 
-            this.btnVerConductores.Location = new System.Drawing.Point(236, 9);
+            this.btnVerConductores.Location = new System.Drawing.Point(292, 8);
             this.btnVerConductores.Name = "btnVerConductores";
             this.btnVerConductores.Size = new System.Drawing.Size(75, 23);
             this.btnVerConductores.TabIndex = 12;
@@ -144,7 +145,7 @@
             // 
             // btnBuscarConductores
             // 
-            this.btnBuscarConductores.Location = new System.Drawing.Point(112, 10);
+            this.btnBuscarConductores.Location = new System.Drawing.Point(168, 9);
             this.btnBuscarConductores.Name = "btnBuscarConductores";
             this.btnBuscarConductores.Size = new System.Drawing.Size(118, 23);
             this.btnBuscarConductores.TabIndex = 11;
@@ -154,7 +155,8 @@
             // 
             // txtBuscarConductores
             // 
-            this.txtBuscarConductores.Location = new System.Drawing.Point(6, 12);
+            this.txtBuscarConductores.Location = new System.Drawing.Point(62, 11);
+            this.txtBuscarConductores.MaxLength = 10;
             this.txtBuscarConductores.Name = "txtBuscarConductores";
             this.txtBuscarConductores.Size = new System.Drawing.Size(100, 20);
             this.txtBuscarConductores.TabIndex = 10;
@@ -190,6 +192,7 @@
             // txtRutaAsignada
             // 
             this.txtRutaAsignada.Location = new System.Drawing.Point(382, 13);
+            this.txtRutaAsignada.MaxLength = 200;
             this.txtRutaAsignada.Name = "txtRutaAsignada";
             this.txtRutaAsignada.Size = new System.Drawing.Size(185, 20);
             this.txtRutaAsignada.TabIndex = 4;
@@ -216,6 +219,7 @@
             // txtApellido2
             // 
             this.txtApellido2.Location = new System.Drawing.Point(236, 39);
+            this.txtApellido2.MaxLength = 50;
             this.txtApellido2.Name = "txtApellido2";
             this.txtApellido2.Size = new System.Drawing.Size(100, 20);
             this.txtApellido2.TabIndex = 3;
@@ -232,6 +236,7 @@
             // txtApellido1
             // 
             this.txtApellido1.Location = new System.Drawing.Point(236, 13);
+            this.txtApellido1.MaxLength = 50;
             this.txtApellido1.Name = "txtApellido1";
             this.txtApellido1.Size = new System.Drawing.Size(100, 20);
             this.txtApellido1.TabIndex = 2;
@@ -248,6 +253,7 @@
             // txtNombre
             // 
             this.txtNombre.Location = new System.Drawing.Point(62, 39);
+            this.txtNombre.MaxLength = 50;
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(100, 20);
             this.txtNombre.TabIndex = 1;
@@ -264,6 +270,7 @@
             // txtCedula
             // 
             this.txtCedula.Location = new System.Drawing.Point(62, 13);
+            this.txtCedula.MaxLength = 10;
             this.txtCedula.Name = "txtCedula";
             this.txtCedula.Size = new System.Drawing.Size(100, 20);
             this.txtCedula.TabIndex = 0;
@@ -292,18 +299,19 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.btnVerCamiones);
             this.groupBox3.Controls.Add(this.btnBuscarCamiones);
             this.groupBox3.Controls.Add(this.txtBuscarCamiones);
             this.groupBox3.Location = new System.Drawing.Point(6, 83);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(378, 38);
+            this.groupBox3.Size = new System.Drawing.Size(573, 38);
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
             // 
             // btnVerCamiones
             // 
-            this.btnVerCamiones.Location = new System.Drawing.Point(236, 9);
+            this.btnVerCamiones.Location = new System.Drawing.Point(293, 9);
             this.btnVerCamiones.Name = "btnVerCamiones";
             this.btnVerCamiones.Size = new System.Drawing.Size(75, 23);
             this.btnVerCamiones.TabIndex = 12;
@@ -313,7 +321,7 @@
             // 
             // btnBuscarCamiones
             // 
-            this.btnBuscarCamiones.Location = new System.Drawing.Point(112, 10);
+            this.btnBuscarCamiones.Location = new System.Drawing.Point(169, 10);
             this.btnBuscarCamiones.Name = "btnBuscarCamiones";
             this.btnBuscarCamiones.Size = new System.Drawing.Size(118, 23);
             this.btnBuscarCamiones.TabIndex = 11;
@@ -323,7 +331,8 @@
             // 
             // txtBuscarCamiones
             // 
-            this.txtBuscarCamiones.Location = new System.Drawing.Point(6, 12);
+            this.txtBuscarCamiones.Location = new System.Drawing.Point(63, 12);
+            this.txtBuscarCamiones.MaxLength = 8;
             this.txtBuscarCamiones.Name = "txtBuscarCamiones";
             this.txtBuscarCamiones.Size = new System.Drawing.Size(100, 20);
             this.txtBuscarCamiones.TabIndex = 10;
@@ -567,6 +576,7 @@
             // txtPlaca
             // 
             this.txtPlaca.Location = new System.Drawing.Point(62, 13);
+            this.txtPlaca.MaxLength = 8;
             this.txtPlaca.Name = "txtPlaca";
             this.txtPlaca.Size = new System.Drawing.Size(100, 20);
             this.txtPlaca.TabIndex = 1;
@@ -673,19 +683,11 @@
             // txtBuscarConductorSeleccionado
             // 
             this.txtBuscarConductorSeleccionado.Location = new System.Drawing.Point(49, 12);
+            this.txtBuscarConductorSeleccionado.MaxLength = 10;
             this.txtBuscarConductorSeleccionado.Name = "txtBuscarConductorSeleccionado";
             this.txtBuscarConductorSeleccionado.Size = new System.Drawing.Size(100, 20);
             this.txtBuscarConductorSeleccionado.TabIndex = 10;
-            // 
-            // tabReportes
-            // 
-            this.tabReportes.Location = new System.Drawing.Point(4, 22);
-            this.tabReportes.Name = "tabReportes";
-            this.tabReportes.Padding = new System.Windows.Forms.Padding(3);
-            this.tabReportes.Size = new System.Drawing.Size(777, 332);
-            this.tabReportes.TabIndex = 3;
-            this.tabReportes.Text = "4. Mostrar Datos";
-            this.tabReportes.UseVisualStyleBackColor = true;
+            this.txtBuscarConductorSeleccionado.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBuscarConductorSeleccionado_KeyDown);
             // 
             // lblResultado
             // 
@@ -746,6 +748,24 @@
             this.btnGuardarConductorxCamion.UseVisualStyleBackColor = true;
             this.btnGuardarConductorxCamion.Click += new System.EventHandler(this.btnGuardarConductorxCamion_Click);
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 14);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(40, 13);
+            this.label10.TabIndex = 1001;
+            this.label10.Text = "Cedula";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 14);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(34, 13);
+            this.label11.TabIndex = 13;
+            this.label11.Text = "Placa";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -755,6 +775,7 @@
             this.Controls.Add(this.lblResultado);
             this.Controls.Add(this.tabMainForm);
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Main Form";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
@@ -820,7 +841,6 @@
         private System.Windows.Forms.TextBox txtPlaca;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TabPage tabCamionesConductor;
-        private System.Windows.Forms.TabPage tabReportes;
         private System.Windows.Forms.Button btnSalir;
         private System.Windows.Forms.ListBox listbAssigned;
         private System.Windows.Forms.ListBox listbUnassigned;
@@ -835,6 +855,8 @@
         private System.Windows.Forms.Button btnMoverIzquierda;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button btnGuardarConductorxCamion;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
     }
 }
 

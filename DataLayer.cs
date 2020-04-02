@@ -324,7 +324,9 @@ namespace TransportesCR2
             CloseData();
             return Camioniones;
         }
+        #endregion //"Camion"
 
+        #region "ConductorxCamion"
         public Dictionary<string, string> GetConductorxCamion(string prmBuscar, int prmAssigned)
         {
             SqlCommand commandData = new SqlCommand();
@@ -333,11 +335,24 @@ namespace TransportesCR2
             OpenData("query");
             if (!string.IsNullOrEmpty(prmBuscar.Trim()))
             {
-                commandData = new System.Data.SqlClient.SqlCommand("SELECT [Placa],Detalles= trim([Placa])+' / '+trim([Marca])+'('+trim([AnnoModelo])+') '+trim(convert(varchar,convert(decimal(8,2),[CapacidadKG]))) FROM [Camion] with(nolock) " +
-                     " ", sqlConnData);
-                //where Placa = @Placa 
-                commandData.Parameters.Add("@Placa", System.Data.SqlDbType.VarChar, 8);
-                commandData.Parameters["@Placa"].Value = prmBuscar.Trim();
+                if (prmAssigned == 0)
+                {
+                    commandData = new System.Data.SqlClient.SqlCommand("select c.Placa,Detalles= trim(c.Placa)+' / '+trim(c.Marca)+'('+trim(c.AnnoModelo)+') '+trim(convert(varchar,convert(decimal(8,2),c.CapacidadKG))) " +
+                        " from Camion c with(nolock)  " +
+                        " left join ConductorCamion cxc with(nolock) on cxc.Placa = c.Placa and cxc.Identificacion = @Identificacion " +
+                        " where cxc.Placa is null " +
+                        " order by c.Placa ", sqlConnData);
+                }
+                else
+                {
+                    commandData = new System.Data.SqlClient.SqlCommand("select c.Placa,Detalles= trim(c.Placa)+' / '+trim(c.Marca)+'('+trim(c.AnnoModelo)+') '+trim(convert(varchar,convert(decimal(8,2),c.CapacidadKG))) " +
+                        " from Camion c with(nolock)  " +
+                        " left join ConductorCamion cxc with(nolock) on cxc.Placa = c.Placa and cxc.Identificacion = @Identificacion " +
+                        " where cxc.Placa is NOT null " +
+                        " order by c.Placa ", sqlConnData);
+                }
+                commandData.Parameters.Add("@Identificacion", System.Data.SqlDbType.VarChar, 10);
+                commandData.Parameters["@Identificacion"].Value = prmBuscar.Trim();
             }
 
             commandData.CommandType = CommandType.Text;
@@ -353,7 +368,89 @@ namespace TransportesCR2
             CloseData();
             return Camioniones;
         }
-        #endregion //"Camion"
+        public bool BorrarConductorxCamion(string prmIdentificacion)
+        {
+            SqlCommand commandData = new SqlCommand();
+            try
+            {
+                commandData = new System.Data.SqlClient.SqlCommand("DELETE FROM [ConductorCamion] WHERE identificacion = @Identificacion ", sqlConnData);
+                commandData.CommandType = CommandType.Text;
+                commandData.Parameters.Add("@Identificacion", System.Data.SqlDbType.VarChar, 10);
+                commandData.Parameters["@Identificacion"].Value = prmIdentificacion.Trim();
+
+                OpenData("query");
+                commandData.ExecuteNonQuery();
+                CloseData();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _LatestError = ex.Message;
+                CloseData();
+                return false;
+            }
+        }
+        public bool GuardaConductorxCamion(string prmIdentificacion, string prmPlaca)
+        {
+            SqlCommand commandData = new SqlCommand();
+            try
+            {
+                commandData = new System.Data.SqlClient.SqlCommand("INSERT INTO [ConductorCamion]([Identificacion],[Placa])" +
+                    "VALUES(@Identificacion,@Placa)", sqlConnData);
+                commandData.CommandType = CommandType.Text;
+                commandData.Parameters.Add("@Identificacion", System.Data.SqlDbType.VarChar, 10);
+                commandData.Parameters["@Identificacion"].Value = prmIdentificacion.Trim();
+                commandData.Parameters.Add("@Placa", System.Data.SqlDbType.VarChar, 8);
+                commandData.Parameters["@Placa"].Value = prmPlaca.Trim();
+
+                OpenData("query");
+                commandData.ExecuteNonQuery();
+                CloseData();
+                _LatestError = "Camion por conductor agregado satisfactoriamente.";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _LatestError = ex.Message;
+                CloseData();
+                return false;
+            }
+        }
+        public Dictionary<string, Conductor> GetConductorxCamion(string prmBuscar)
+        {
+            SqlCommand commandData = new SqlCommand();
+            SqlDataReader reader;
+            Dictionary<string, Conductor> Conductores = new Dictionary<string, Conductor>();
+            OpenData("query");
+            if (!string.IsNullOrEmpty(prmBuscar.Trim()))
+            {
+                commandData = new System.Data.SqlClient.SqlCommand("SELECT [Identificacion],[Nombre],[PrimerApeliido],[SegundoApellido],[RutaAsignada] FROM [Conductor] with(nolock) " +
+                    "where Identificacion= @Identificacion " +
+                    "order by Identificacion", sqlConnData);
+                commandData.Parameters.Add("@Identificacion", System.Data.SqlDbType.VarChar, 10);
+                commandData.Parameters["@Identificacion"].Value = prmBuscar.Trim();
+            }
+
+            commandData.CommandType = CommandType.Text;
+            reader = commandData.ExecuteReader(CommandBehavior.CloseConnection);
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Conductor conductor = new Conductor(reader["Identificacion"].ToString()
+                        , reader["Nombre"].ToString()
+                        , reader["PrimerApeliido"].ToString()
+                        , reader["SegundoApellido"].ToString()
+                        , reader["RutaAsignada"].ToString()
+                        );
+                    Conductores.Add(conductor.Identificacion, conductor);
+                }
+                reader.Close();
+            }
+            CloseData();
+            return Conductores;
+        }
+        #endregion //"ConductorxCamion"
 
     }
 }
