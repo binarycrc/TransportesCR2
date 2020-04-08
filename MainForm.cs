@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*********************************************************************
+ * Copyright 2020 Pablo Ugalde
+ * Universidad Estatal A Distancia
+ * PRIMER CUATRI-2020 00830 PROGRAMACION AVANZADA
+ * 
+*********************************************************************/
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,43 +20,102 @@ namespace TransportesCR2
 {
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// Creamos la instancia para la clase DataLayer
+        /// </summary>
         DataLayer datalayer = new DataLayer();
-
+        /// <summary>
+        /// Constructor de MainForm
+        /// </summary>
         public MainForm()
         {
             InitializeComponent();
         }
+        /// <summary>
+        /// Evento que se produce antes de que se muestre el formulario por primera vez.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainForm_Load(object sender, EventArgs e)
         {
-            CargaGridConductores("");
-            CargaGridCamiones("");
+            try
+            {
+                CargaGridConductores(""); //Ejecucion del metodo para cargar el grid de conductores
+                CargaGridCamiones(""); //Ejecucion del metodo para cargar el grid de camiones
+                CargaGridConductorxCamion("");//Ejecucion del metodo para cargar el grid de conductorxcamiones
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
+            }
         }
+        /// <summary>
+        /// Evento que ocurre antes de que se cierre el formulario.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            try
+            {
+                Application.Exit(); //Cerramos completamente la aplicacion
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
+            }
         }
+        /// <summary>
+        /// Procedimiento para validar el ingreso de valores decimales
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void soloNumerosConPunto(object sender, KeyPressEventArgs e)
         {
-            if (!(char.IsDigit(e.KeyChar) 
-                || e.KeyChar == (char)Keys.Back 
-                || e.KeyChar == '.'))
-            { e.Handled = true; }
-            TextBox txtDecimal = sender as TextBox;
-            if (e.KeyChar == '.' && txtDecimal.Text.Contains("."))
-            {e.Handled = true;}
+            try
+            {
+                if (!(char.IsDigit(e.KeyChar)
+                                || e.KeyChar == (char)Keys.Back
+                                || e.KeyChar == '.'))
+                { e.Handled = true; }
+                TextBox txtDecimal = sender as TextBox;
+                if (e.KeyChar == '.' && txtDecimal.Text.Contains("."))
+                { e.Handled = true; }
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
+            }
         }
+        /// <summary>
+        /// Evento que ocurre con el click en el boton salir y cierra el formulario.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnSalir_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            try
+            {
+                Application.Exit(); //Cerramos completamente la aplicacion
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
+            }
         }
 
         #region "Conductores"
+        /// <summary>
+        /// Evento que ocurre con el click en el boton Guardar Conductor
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnGuardarConductor_Click(object sender, EventArgs e)
         {
-            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Current = Cursors.WaitCursor; //Cambiamos el tipo de cursor
             try
             {
-                if (
+                if ( //Validamos que los campos de texto no sean nulos, vacios o espacios en blanco
                        (string.IsNullOrEmpty(txtCedula.Text)) || (string.IsNullOrWhiteSpace(txtCedula.Text))
                     || (string.IsNullOrEmpty(txtNombre.Text)) || (string.IsNullOrWhiteSpace(txtNombre.Text))
                     || (string.IsNullOrEmpty(txtApellido1.Text)) || (string.IsNullOrWhiteSpace(txtApellido1.Text))
@@ -57,94 +123,145 @@ namespace TransportesCR2
                     || (string.IsNullOrEmpty(txtRutaAsignada.Text)) || (string.IsNullOrWhiteSpace(txtRutaAsignada.Text))
                     )
                 {
-                    lblResultado.Text = "Valores en formato incorrecto o nulos";
+                    lblResultado.Text = "Valores en formato incorrecto o nulos"; //si existe algun valor invalido se muestra un mensaje
                 }
                 else
                 {
-                    if (!datalayer.GuardaConductor(txtCedula.Text, txtNombre.Text, txtApellido1.Text, txtApellido2.Text, txtRutaAsignada.Text))
+                    // Creamos la instancia para la clase Conductor
+                    Conductor conductor = new Conductor(txtCedula.Text, txtNombre.Text, txtApellido1.Text, txtApellido2.Text, txtRutaAsignada.Text);
+                    //if (!datalayer.GuardaConductor(txtCedula.Text, txtNombre.Text, txtApellido1.Text, txtApellido2.Text, txtRutaAsignada.Text))
+                    if (!datalayer.GuardaConductor(conductor)) //Llamamos al evento para guardar el conductor
                     {
-                        lblResultado.Text = datalayer._LatestError;
+                        lblResultado.Text = datalayer._LatestError; //Cuando el resultado del ingreso es negativo desplegamos un mensaje
                     }
                     else
                     {
-                        lblResultado.Text = datalayer._LatestError;
-                        datalayer._LatestError = "";
-                        LimpiaBoxesConductores();
-                        CargaGridConductores("");
+                        lblResultado.Text = datalayer._LatestError; //Desplegamos un mensaje cuando el ingreso es positivo
+                        datalayer._LatestError = ""; //Limpiamos el valor de los mensajes en la clase DataLayer
+                        LimpiaBoxesConductores(); //Limpiamos los textbox utilizados para la clace Conductor
+                        CargaGridConductores(""); //Cargamos nuevamente el grid de conductores
                     }
                 }
             }
             catch (Exception ex)
             {
-                lblResultado.Text = ex.Message;
-                throw;
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
             }
-            Cursor.Current = Cursors.Default;
+            Cursor.Current = Cursors.Default; //Cambiamos el tipo de cursor
         }
+        /// <summary>
+        /// Procedimiento para cargar los conductores en el grid 
+        /// </summary>
+        /// <param name="prmBuscar"></param>
         private void CargaGridConductores(string prmBuscar)
         {
+            //Creamos la coleccion de tipo Conductor
             Dictionary<string, Conductor> Conductores = new Dictionary<string, Conductor>();
-            gvConductores.DataSource = null;
+            gvConductores.DataSource = null; //Se limpia el origen de los datos para el grid
             try
             {
-                Conductores = datalayer.GetConductores(prmBuscar);
-                gvConductores.DataSource = Conductores.Values.ToList();
+                Conductores = datalayer.GetConductores(prmBuscar); //Llamamos al metodo que devuelve una coleccion de tipo Conductor
+                gvConductores.DataSource = Conductores.Values.ToList(); //Cargamos la coleccion al grid
             }
             catch (Exception ex)
             {
-                lblResultado.Text = ex.Message;
-                throw;
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
             }
         }
+        /// <summary>
+        /// Procedimiento para limpiar los textbox de ingreso de conductores
+        /// </summary>
         private void LimpiaBoxesConductores()
         {
-            txtCedula.Text = "";
-            txtNombre.Text = "";
-            txtApellido1.Text = "";
-            txtApellido2.Text = "";
-            txtRutaAsignada.Text = "";
-        }
-        private void btnBuscarConductores_Click(object sender, EventArgs e)
-        {
-            Cursor.Current = Cursors.WaitCursor;
             try
             {
+                txtCedula.Text = "";
+                txtNombre.Text = "";
+                txtApellido1.Text = "";
+                txtApellido2.Text = "";
+                txtRutaAsignada.Text = "";
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
+            }
+        }
+        /// <summary>
+        /// Evento que ocurre con el click en el boton Buscar Conductor
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnBuscarConductores_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;//Cambiamos el tipo de cursor
+            try
+            {
+                //Validamos que los campos de texto no sean nulos, vacios o espacios en blanco
                 if ((string.IsNullOrEmpty(txtBuscarConductores.Text)) || (string.IsNullOrWhiteSpace(txtBuscarConductores.Text)))
                 {
-                    lblResultado.Text = "Valores en formato incorrecto o nulos";
+                    lblResultado.Text = "Valores en formato incorrecto o nulos"; //si existe algun valor invalido se muestra un mensaje
                 }
                 else
                 {
-                    CargaGridConductores(txtBuscarConductores.Text);
-                    lblResultado.Text = datalayer._LatestError;
-                    datalayer._LatestError = "";
+                    CargaGridConductores(txtBuscarConductores.Text); //Cargamos nuevamente el grid de conductores segun el filtro
+                    lblResultado.Text = datalayer._LatestError;//Desplegamos un mensaje cuando el ingreso es positivo
+                    datalayer._LatestError = "";//Limpiamos el valor de los mensajes en la clase DataLayer
                 }
             }
             catch (Exception ex)
             {
-                lblResultado.Text = ex.Message;
-                throw;
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
             }
-            Cursor.Current = Cursors.Default;
+            Cursor.Current = Cursors.Default;//Cambiamos el tipo de cursor
         }
+        /// <summary>
+        /// Evento que ocurre con las teclas accionadas en el textbox
+        /// cuando la tecla es enter llama al metodo Buscar Conductores
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void txtBuscarConductores_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter){ btnBuscarConductores_Click(this, new EventArgs());}
+            try
+            {
+                if (e.KeyCode == Keys.Enter) { btnBuscarConductores_Click(this, new EventArgs()); }
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
+            }
         }
+        /// <summary>
+        /// Evento que ocurre con el click en el boton Ver todos los Conductores
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnVerConductores_Click(object sender, EventArgs e)
         {
-            CargaGridConductores("");
-            txtBuscarConductores.Text = "";
+            try
+            {
+                CargaGridConductores("");//Cargamos nuevamente el grid de conductores 
+                txtBuscarConductores.Text = "";//Limpiamos el textbox
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
+            }
         }
         #endregion //"Conductores"
 
         #region "Camiones"
+        /// <summary>
+        /// Evento que ocurre con el click en el boton Guardar Camion
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnGuardaCamion_Click(object sender, EventArgs e)
         {
-            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Current = Cursors.WaitCursor;//Cambiamos el tipo de cursor
             try
             {
-                if (
+                if (//Validamos que los campos de texto no sean nulos, vacios o espacios en blanco
                        (string.IsNullOrEmpty(txtPlaca.Text)) || (string.IsNullOrWhiteSpace(txtPlaca.Text))
                     || (string.IsNullOrEmpty(numModelo.Text)) || (string.IsNullOrWhiteSpace(numModelo.Text))
                     || (string.IsNullOrEmpty(cbMarca.SelectedItem.ToString())) || (string.IsNullOrWhiteSpace(cbMarca.SelectedItem.ToString()))
@@ -152,87 +269,143 @@ namespace TransportesCR2
                     || (string.IsNullOrEmpty(txtCapVolumen.Text)) || (string.IsNullOrWhiteSpace(txtCapVolumen.Text))
                     )
                 {
-                    lblResultado.Text = "Valores en formato incorrecto o nulos";
+                    lblResultado.Text = "Valores en formato incorrecto o nulos"; //si existe algun valor invalido se muestra un mensaje
                 }
                 else
                 {
-                    if (!datalayer.GuardaCamion(txtPlaca.Text, numModelo.Text, cbMarca.SelectedItem.ToString(), txtCapKilos.Text, txtCapVolumen.Text))
+                    // Creamos la instancia para la clase Camion
+                    Camion camion = new Camion(txtPlaca.Text, numModelo.Text, cbMarca.SelectedItem.ToString(), txtCapKilos.Text, txtCapVolumen.Text);
+                    //if (!datalayer.GuardaCamion(txtPlaca.Text, numModelo.Text, cbMarca.SelectedItem.ToString(), txtCapKilos.Text, txtCapVolumen.Text))
+                    if (!datalayer.GuardaCamion(camion))
                     {
-                        lblResultado.Text = datalayer._LatestError;
+                        lblResultado.Text = datalayer._LatestError; //Cuando el resultado del ingreso es negativo desplegamos un mensaje
                     }
                     else
                     {
-                        lblResultado.Text = datalayer._LatestError;
-                        datalayer._LatestError = "";
-                        LimpiaBoxesCamiones();
-                        CargaGridCamiones("");
+                        lblResultado.Text = datalayer._LatestError;//Desplegamos un mensaje cuando el ingreso es positivo
+                        datalayer._LatestError = "";//Limpiamos el valor de los mensajes en la clase DataLayer
+                        LimpiaBoxesCamiones();//Limpiamos el grid de camiones
+                        CargaGridCamiones("");//Cargamos nuevamente el grid de camiones
                     }
                 }
             }
             catch (Exception ex)
             {
-                lblResultado.Text = ex.Message;
-                throw;
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
             }
-            Cursor.Current = Cursors.Default;
+            Cursor.Current = Cursors.Default;//Cambiamos el tipo de cursor
         }
+        /// <summary>
+        /// Procedimiento para cargar los camiones en el grid 
+        /// </summary>
+        /// <param name="prmBuscar"></param>
         private void CargaGridCamiones(string prmBuscar)
         {
+            //Creamos la coleccion de tipo Camion
             Dictionary<string, Camion> Camiones = new Dictionary<string, Camion>();
-            gvCamiones.DataSource = null;
+            gvCamiones.DataSource = null; //Se limpia el origen de los datos para el grid
             try
             {
-                Camiones = datalayer.GetCamiones(prmBuscar);
-                gvCamiones.DataSource = Camiones.Values.ToList();
+                Camiones = datalayer.GetCamiones(prmBuscar); //Llamamos al metodo que devuelve una coleccion de tipo Camion
+                gvCamiones.DataSource = Camiones.Values.ToList(); //Cargamos la coleccion al grid
             }
             catch (Exception ex)
             {
-                lblResultado.Text = ex.Message;
-                throw;
+                lblResultado.Text = ex.Message;//si existe algun error se muestra un mensaje
             }
         }
+        /// <summary>
+        /// Procedimiento para limpiar los textbox de ingreso de camiones
+        /// </summary>
         private void LimpiaBoxesCamiones()
         {
-            txtPlaca.Text = "";
-            txtCapKilos.Text = "";
-            txtCapVolumen.Text = "";
-        }
-        private void btnBuscarCamiones_Click(object sender, EventArgs e)
-        {
-            Cursor.Current = Cursors.WaitCursor;
             try
             {
+                txtPlaca.Text = "";
+                txtCapKilos.Text = "";
+                txtCapVolumen.Text = "";
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
+            }
+        }
+        /// <summary>
+        /// Evento que ocurre con el click en el boton Buscar camion
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnBuscarCamiones_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;//Cambiamos el tipo de cursor
+            try
+            {
+                //Validamos que los campos de texto no sean nulos, vacios o espacios en blanco
                 if ((string.IsNullOrEmpty(txtBuscarCamiones.Text)) || (string.IsNullOrWhiteSpace(txtBuscarCamiones.Text)))
                 {
-                    lblResultado.Text = "Valores en formato incorrecto o nulos";
+                    lblResultado.Text = "Valores en formato incorrecto o nulos"; //si existe algun valor invalido se muestra un mensaje
                 }
                 else
                 {
-                    CargaGridCamiones(txtBuscarCamiones.Text);
-                    lblResultado.Text = datalayer._LatestError;
-                    datalayer._LatestError = "";
+                    CargaGridCamiones(txtBuscarCamiones.Text); //Cargamos nuevamente el grid de camiones segun el filtro
+                    lblResultado.Text = datalayer._LatestError; //Desplegamos un mensaje cuando el ingreso es positivo
+                    datalayer._LatestError = "";//Limpiamos el valor de los mensajes en la clase DataLayer
                 }
             }
             catch (Exception ex)
             {
-                lblResultado.Text = ex.Message;
-                throw;
+                lblResultado.Text = ex.Message;//si existe algun error se muestra un mensaje
             }
-            Cursor.Current = Cursors.Default;
+            Cursor.Current = Cursors.Default;//Cambiamos el tipo de cursor
         }
+        /// <summary>
+        /// Evento que ocurre con las teclas accionadas en el textbox
+        /// cuando la tecla es enter llama al metodo Buscar camion
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>        
         private void txtBuscarCamiones_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter) { btnBuscarCamiones_Click(this, new EventArgs()); }
+            try
+            {
+                if (e.KeyCode == Keys.Enter) { btnBuscarCamiones_Click(this, new EventArgs()); }
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
+            }
         }
+        /// <summary>
+        /// Evento que ocurre con el click en el boton Ver todos los camiones
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnVerCamiones_Click(object sender, EventArgs e)
         {
-            CargaGridCamiones("");
-            txtBuscarCamiones.Text = "";
+            try
+            {
+                CargaGridCamiones("");
+                txtBuscarCamiones.Text = "";
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
+            }
         }
+        /// <summary>
+        /// Evento que ocurre con las teclas accionadas en el textbox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void txtCapKilos_KeyPress(object sender, KeyPressEventArgs e)
         {
             soloNumerosConPunto(sender, e);
         }
+        /// <summary>
+        /// Evento que ocurre con las teclas accionadas en el textbox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void txtCapVolumen_KeyPress(object sender, KeyPressEventArgs e)
         {
             soloNumerosConPunto(sender, e);
@@ -240,20 +413,21 @@ namespace TransportesCR2
         #endregion //"Camiones"
 
         #region "ConductorxCamion"
+        /// <summary>
+        /// Procedimiento para cargar los conductores por camion en el grid
+        /// </summary>
+        /// <param name="prmBuscar"></param>
         private void CargaConductorxCamion(string prmBuscar)
         {
-            Dictionary<string, Conductor> Conductores = new Dictionary<string, Conductor>();
-            lblIdentificacionSeleccionado.Text = "";
-            lblNombreSeleccionado.Text = "";
-            lblPApellidoSeleccionado.Text = "";
-            lblRutaSeleccionado.Text = "";
+            LimpiaBoxesConductorxCamion(); //Limpiamos los textbox utilizados para la clace ConductorxCamion
+            //Creamos la coleccion de tipo Conductor
+            Dictionary<string, Conductor> Conductores = new Dictionary<string, Conductor>(); 
             try
             {
-                Conductores = datalayer.GetConductorxCamion(prmBuscar);
-                //gvConductores.DataSource = Conductores.Values.ToList();
+                Conductores = datalayer.GetConductorxCamion(prmBuscar); //Llamamos al metodo que devuelve una coleccion de tipo conductor
                 foreach (Conductor conductor in Conductores.Values)
                 {
-                    //listbUnassigned.Items.Add(kvp.Value.Trim());
+                    //Mostramos los datos del conductor seleccionado
                     lblIdentificacionSeleccionado.Text = conductor.Identificacion;
                     lblNombreSeleccionado.Text = conductor.Nombre;
                     lblPApellidoSeleccionado.Text = conductor.PApellido;
@@ -262,160 +436,314 @@ namespace TransportesCR2
             }
             catch (Exception ex)
             {
-                lblResultado.Text = ex.Message;
-                throw;
+                lblResultado.Text = ex.Message;//si existe algun error se muestra un mensaje
             }
         }
+        /// <summary>
+        /// Procedimiento para limpiar los textbox de ConductorxCamion
+        /// </summary>
+        private void LimpiaBoxesConductorxCamion()
+        {
+            try
+            {
+                lblIdentificacionSeleccionado.Text = "";
+                lblNombreSeleccionado.Text = "";
+                lblPApellidoSeleccionado.Text = "";
+                lblRutaSeleccionado.Text = "";
+                listbUnassigned.Items.Clear();
+                listbAssigned.Items.Clear();
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
+            }
+        }
+        /// <summary>
+        /// Evento que ocurre con el click en el boton Buscar ConductorxCamion
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnBuscarConductorxCamion_Click(object sender, EventArgs e)
         {
-            Cursor.Current = Cursors.WaitCursor;
-            lblIdentificacionSeleccionado.Text = "";
-            lblNombreSeleccionado.Text = "";
-            lblPApellidoSeleccionado.Text = "";
-            lblRutaSeleccionado.Text = "";
-            listbUnassigned.Items.Clear();
-            listbAssigned.Items.Clear();
+            Cursor.Current = Cursors.WaitCursor;//Cambiamos el tipo de cursor
+            LimpiaBoxesConductorxCamion(); //Limpiamos los textbox utilizados para la clace ConductorxCamion
+            //Cambiamos el estilo del boton 
             btnGuardarConductorxCamion.Font = new Font(btnGuardarConductorxCamion.Font.Name, btnGuardarConductorxCamion.Font.Size, FontStyle.Regular);
             btnGuardarConductorxCamion.ForeColor = System.Drawing.Color.Black;
             try
             {
+                //Validamos que los campos de texto no sean nulos, vacios o espacios en blanco
                 if ((string.IsNullOrEmpty(txtBuscarConductorSeleccionado.Text)) || (string.IsNullOrWhiteSpace(txtBuscarConductorSeleccionado.Text)))
                 {
-                    lblResultado.Text = "Valores en formato incorrecto o nulos";
+                    lblResultado.Text = "Valores en formato incorrecto o nulos";//si existe algun valor invalido se muestra un mensaje
                 }
                 else
                 {
-                    CargaConductorxCamion(txtBuscarConductorSeleccionado.Text);
-                    CargaListbConductorxCamion(txtBuscarConductorSeleccionado.Text);
-                    lblResultado.Text = datalayer._LatestError;
-                    datalayer._LatestError = "";
+                    CargaConductorxCamion(txtBuscarConductorSeleccionado.Text); //Buscamos el conductor segun el filtro
+                    CargaListbConductorxCamion(txtBuscarConductorSeleccionado.Text); 
+                    lblResultado.Text = datalayer._LatestError; //Desplegamos un mensaje cuando el ingreso es positivo
+                    datalayer._LatestError = ""; //Limpiamos el valor de los mensajes en la clase DataLayer
                 }
             }
             catch (Exception ex)
             {
-                lblResultado.Text = ex.Message;
-                throw;
+                lblResultado.Text = ex.Message;//si existe algun error se muestra un mensaje
             }
-            Cursor.Current = Cursors.Default;
+            Cursor.Current = Cursors.Default;//Cambiamos el tipo de cursor
         }
+        /// <summary>
+        /// Procedimiento para cargas los ListBox de ConductorxCamion
+        /// </summary>
+        /// <param name="prmBuscar"></param>
         private void CargaListbConductorxCamion(string prmBuscar)
         {
-            Dictionary<string, string> Camiones = new Dictionary<string, string>();
-            listbUnassigned.Items.Clear();
+            //Creamos la coleccion de tipo Camion
+            Dictionary<string, string> ConductorxCamion = new Dictionary<string, string>();
+            //Limpiamos ambos listbox
+            listbUnassigned.Items.Clear(); 
             listbAssigned.Items.Clear();
             try
             {
-                Camiones = datalayer.GetConductorxCamion(prmBuscar, 0);
-                foreach (var camion in Camiones.ToArray())
+                ConductorxCamion = datalayer.GetConductorxCamion(prmBuscar, 0); //Buscamos los camiones NO asignados al conductor
+                foreach (var strcamion in ConductorxCamion.ToArray())
                 {
-                    listbUnassigned.Items.Add(camion.Value.Trim());
+                    //Agregamos cada camion en un formato especifico 
+                    listbUnassigned.Items.Add(strcamion.Value.Trim());
                 }
-                Camiones = datalayer.GetConductorxCamion(prmBuscar, 1);
-                foreach (var camion in Camiones.ToArray())
+                ConductorxCamion = datalayer.GetConductorxCamion(prmBuscar, 1); //Buscamos los camiones ASIGNADOS al conductor
+                foreach (var strcamion in ConductorxCamion.ToArray())
                 {
-                    listbAssigned.Items.Add(camion.Value.Trim());
+                    //Agregamos cada camion en un formato especifico 
+                    listbAssigned.Items.Add(strcamion.Value.Trim());
                 }
+                //Cambiamos el estilo del boton 
                 btnGuardarConductorxCamion.Font = new Font(btnGuardarConductorxCamion.Font.Name, btnGuardarConductorxCamion.Font.Size, FontStyle.Regular);
                 btnGuardarConductorxCamion.ForeColor = System.Drawing.Color.Black;
-                //listbUnassigned.DataSource = new BindingSource(Camiones, null);
-                //listbUnassigned.DisplayMember = "Value";
-                //listbUnassigned.ValueMember = "Key";
-
             }
             catch (Exception ex)
             {
-                lblResultado.Text = ex.Message;
-                throw;
+                lblResultado.Text = ex.Message;//si existe algun error se muestra un mensaje
             }
         }
+        /// <summary>
+        /// Evento para mover simular mover items entre los listbox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnMoverDerecha_Click(object sender, EventArgs e)
         {
-            if (listbUnassigned.Items.Count > 0 && listbUnassigned.SelectedItem != null) 
-            {
-                for (int i = 0; i < listbUnassigned.Items.Count; i++)
-                {
-                    if (listbUnassigned.GetSelected(i)) 
-                    {
-                        listbAssigned.Items.Add(listbUnassigned.Items[i]);
-                    }
-                }
-                for (int i = 0; i < listbUnassigned.Items.Count; i++)
-                {
-                    if (listbUnassigned.GetSelected(i))
-                    {
-                        listbUnassigned.Items.Remove(listbUnassigned.Items[i]);
-                    }
-                }
-                btnGuardarConductorxCamion.Font = new Font(btnGuardarConductorxCamion.Font.Name, btnGuardarConductorxCamion.Font.Size, FontStyle.Bold);
-                btnGuardarConductorxCamion.ForeColor = System.Drawing.Color.Red;
-            }
-        }
-        private void btnMoverIzquierda_Click(object sender, EventArgs e)
-        {
-            if (listbAssigned.Items.Count > 0 && listbAssigned.SelectedItem != null)
-            {
-                for (int i = 0; i < listbAssigned.Items.Count; i++)
-                {
-                    if (listbAssigned.GetSelected(i))
-                    {
-                        listbUnassigned.Items.Add(listbAssigned.Items[i]);
-                    }
-                }
-                for (int i = 0; i < listbAssigned.Items.Count; i++)
-                {
-                    if (listbAssigned.GetSelected(i))
-                    {
-                        listbAssigned.Items.Remove(listbAssigned.Items[i]);
-                    }
-                }
-                btnGuardarConductorxCamion.Font = new Font(btnGuardarConductorxCamion.Font.Name, btnGuardarConductorxCamion.Font.Size, FontStyle.Bold);
-                btnGuardarConductorxCamion.ForeColor = System.Drawing.Color.Red;
-            }
-        }
-        private void btnGuardarConductorxCamion_Click(object sender, EventArgs e)
-        {
-            Cursor.Current = Cursors.WaitCursor;
             try
             {
+                //Si existen items seleccionado en el listbox
+                if (listbUnassigned.Items.Count > 0 && listbUnassigned.SelectedItem != null)
+                {
+                    //para todos los items en el listbox de camiones NO asignados
+                    for (int i = 0; i < listbUnassigned.Items.Count; i++)
+                    {
+                        //Si esta seleccionado lo agregamos en el otro listbox
+                        if (listbUnassigned.GetSelected(i))
+                        {
+                            listbAssigned.Items.Add(listbUnassigned.Items[i]);
+                        }
+                    }
+                    //para todos los items en el listbox de camiones ASIGNADOS
+                    for (int i = 0; i < listbUnassigned.Items.Count; i++)
+                    {
+                        //Si esta seleccionado lo removemos
+                        if (listbUnassigned.GetSelected(i))
+                        {
+                            listbUnassigned.Items.Remove(listbUnassigned.Items[i]);
+                        }
+                    }
+                    //Cambiamos el estilo del boton 
+                    btnGuardarConductorxCamion.Font = new Font(btnGuardarConductorxCamion.Font.Name, btnGuardarConductorxCamion.Font.Size, FontStyle.Bold);
+                    btnGuardarConductorxCamion.ForeColor = System.Drawing.Color.Red;
+                }
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message;//si existe algun error se muestra un mensaje
+            }
+        }
+        /// <summary>
+        /// Evento para mover simular mover items entre los listbox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnMoverIzquierda_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //Si existen items seleccionado en el listbox
+                if (listbAssigned.Items.Count > 0 && listbAssigned.SelectedItem != null)
+                {
+                    //para todos los items en el listbox de camiones ASIGNADOS
+                    for (int i = 0; i < listbAssigned.Items.Count; i++)
+                    {
+                        //Si esta seleccionado lo agregamos en el otro listbox
+                        if (listbAssigned.GetSelected(i))
+                        {
+                            listbUnassigned.Items.Add(listbAssigned.Items[i]);
+                        }
+                    }
+                    //para todos los items en el listbox de camiones ASIGNADOS
+                    for (int i = 0; i < listbAssigned.Items.Count; i++)
+                    {
+                        //Si esta seleccionado lo removemos
+                        if (listbAssigned.GetSelected(i))
+                        {
+                            listbAssigned.Items.Remove(listbAssigned.Items[i]);
+                        }
+                    }
+                    //Cambiamos el estilo del boton 
+                    btnGuardarConductorxCamion.Font = new Font(btnGuardarConductorxCamion.Font.Name, btnGuardarConductorxCamion.Font.Size, FontStyle.Bold);
+                    btnGuardarConductorxCamion.ForeColor = System.Drawing.Color.Red;
+                }
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message;//si existe algun error se muestra un mensaje
+            }
+        }
+        /// <summary>
+        /// Evento que ocurre con el click en el boton Guardar ConductorxCamion
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnGuardarConductorxCamion_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;//Cambiamos el tipo de cursor
+            try
+            {
+                //Borramos todos los camiones asignados al conductor
                 datalayer.BorrarConductorxCamion(lblIdentificacionSeleccionado.Text.Trim());
+                //Para cada item del listbox de camiones ASIGNADOS
                 for (int i = 0; i < listbAssigned.Items.Count; i++)
                 {
+                    //Llamamos al evento para guardar el ConductorxCamion
                     if (!datalayer.GuardaConductorxCamion(lblIdentificacionSeleccionado.Text.Trim(), listbAssigned.Items[i].ToString().Split('/')[0].Trim()))
                     {
-                        lblResultado.Text = datalayer._LatestError;
+                        lblResultado.Text = datalayer._LatestError;//Cuando el resultado del ingreso es negativo desplegamos un mensaje
                     }
                     else
                     {
-                        lblResultado.Text = datalayer._LatestError;
-                        datalayer._LatestError = "";
+                        lblResultado.Text = datalayer._LatestError;//Desplegamos un mensaje cuando el ingreso es positivo
+                        datalayer._LatestError = "";//Limpiamos el valor de los mensajes en la clase DataLayer
                     }
                 }
             }
             catch (Exception ex)
             {
-                lblResultado.Text = ex.Message;
-                throw;
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
             }
-            Cursor.Current = Cursors.Default;
+            Cursor.Current = Cursors.Default;//Cambiamos el tipo de cursor
+            //Cambiamos el estilo del boton 
             btnGuardarConductorxCamion.Font = new Font(btnGuardarConductorxCamion.Font.Name, btnGuardarConductorxCamion.Font.Size, FontStyle.Regular);
             btnGuardarConductorxCamion.ForeColor = System.Drawing.Color.Black;
 
         }
+        /// <summary>
+        /// Evento que ocurre con las teclas accionadas en el textbox
+        /// cuando la tecla es enter llama al metodo Buscar Conductor
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void txtBuscarConductorSeleccionado_KeyDown(object sender, KeyEventArgs e)
         {
-            lblIdentificacionSeleccionado.Text = "";
-            lblNombreSeleccionado.Text = "";
-            lblPApellidoSeleccionado.Text = "";
-            lblRutaSeleccionado.Text = "";
+            LimpiaBoxesConductorxCamion();
+            //Cambiamos el estilo del boton 
             btnGuardarConductorxCamion.Font = new Font(btnGuardarConductorxCamion.Font.Name, btnGuardarConductorxCamion.Font.Size, FontStyle.Regular);
             btnGuardarConductorxCamion.ForeColor = System.Drawing.Color.Black;
-            listbUnassigned.Items.Clear();
-            listbAssigned.Items.Clear();
-
-            if (e.KeyCode == Keys.Enter) { btnBuscarConductorxCamion_Click(this, new EventArgs()); }
+            try
+            {
+                if (e.KeyCode == Keys.Enter) { btnBuscarConductorxCamion_Click(this, new EventArgs()); }
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
+            }
+        }
+        /// <summary>
+        /// Procedimiento para cargar los conductores en el grid 
+        /// </summary>
+        /// <param name="prmBuscar"></param>
+        private void CargaGridConductorxCamion(string prmBuscar)
+        {
+            //Creamos la coleccion de tipo Conductor
+            List<ConductorxCamion> conductorxcamiones = new List<ConductorxCamion>();
+            gvConductorxCamion.DataSource = null; //Se limpia el origen de los datos para el grid
+            try
+            {
+                conductorxcamiones = datalayer.GetConductorxCamiones(prmBuscar); //Llamamos al metodo que devuelve una coleccion de tipo Conductor
+                gvConductorxCamion.DataSource = conductorxcamiones; //Cargamos la coleccion al grid
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
+            }
+        }
+        /// <summary>
+        /// Evento para buscar conductorxcamion
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnFiltrarCamionesxConductor_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;//Cambiamos el tipo de cursor
+            try
+            {
+                //Validamos que los campos de texto no sean nulos, vacios o espacios en blanco
+                if ((string.IsNullOrEmpty(txtBuscarConductorxCamion.Text)) || (string.IsNullOrWhiteSpace(txtBuscarConductorxCamion.Text)))
+                {
+                    lblResultado.Text = "Valores en formato incorrecto o nulos"; //si existe algun valor invalido se muestra un mensaje
+                }
+                else
+                {
+                    CargaGridConductorxCamion(txtBuscarConductorxCamion.Text); //Cargamos nuevamente el grid de conductores segun el filtro
+                    lblResultado.Text = datalayer._LatestError;//Desplegamos un mensaje cuando el ingreso es positivo
+                    datalayer._LatestError = "";//Limpiamos el valor de los mensajes en la clase DataLayer
+                }
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
+            }
+            Cursor.Current = Cursors.WaitCursor;//Cambiamos el tipo de cursor
+        }
+        /// <summary>
+        /// Evento que ocurre con el click en el boton Ver todos los Conductores x Camion
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnVerTodosCamionesxConductor_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CargaGridConductorxCamion("");//Cargamos nuevamente el grid de conductores 
+                txtBuscarConductorxCamion.Text = "";//Limpiamos el textbox
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
+            }
+        }
+        /// <summary>
+        /// Evento que ocurre con las teclas accionadas en el textbox
+        /// cuando la tecla es enter llama al metodo Buscar Conductores x camion
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void txtBuscarConductorxCamion_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter) { btnVerTodosCamionesxConductor_Click(this, new EventArgs()); }
+            }
+            catch (Exception ex)
+            {
+                lblResultado.Text = ex.Message; //si existe algun error se muestra un mensaje
+            }
         }
         #endregion //"ConductorxCamion"
-
-
     }
 }

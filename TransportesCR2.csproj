@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Camion.cs" />
     <Compile Include="Conductor.cs" />
+    <Compile Include="ConductorxCamion.cs" />
     <Compile Include="DataInfo.cs">
       <SubType>Form</SubType>
     </Compile>

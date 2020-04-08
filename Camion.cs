@@ -15,7 +15,7 @@ namespace TransportesCR2
     class Camion
     {
         /// <summary>
-        /// Clase para el tipo de Vehiculo, Camion
+        /// Clase para el tipo de Camion
         /// </summary>
         string _placa;
         string _modelo;
@@ -23,7 +23,7 @@ namespace TransportesCR2
         string _capacidadkilos;
         string _capacidadvolumen;
         /// <summary>
-        /// Constructor de la clase Vehiculo
+        /// Constructor de la clase Camion
         /// </summary>
         /// <param name="placa"></param>
         /// <param name="modelo"></param>
@@ -39,12 +39,6 @@ namespace TransportesCR2
             _capacidadvolumen= capacidadvolumen;
         }
 
-//[Placa] [varchar] (8) NOT NULL,
-//[AnnoModelo] [varchar] (4) NOT NULL,
-//[Marca] [varchar] (50) NOT NULL,
-//[CapacidadKG] [decimal](18, 2) NOT NULL,
-//[CapacidadVl] [decimal](18, 2) NOT NULL,
-
         /// <summary>
         /// Propiedad para el campo placa
         /// </summary>
@@ -53,12 +47,10 @@ namespace TransportesCR2
         /// Propiedad para el campo Modelo
         /// </summary>
         public string Modelo { get { return _modelo; } set { _modelo = value; } }
-
         /// <summary>
         /// Propiedad para el campo Marca
         /// </summary>
         public string Marca { get { return _marca; } set { _marca = value; } }
-
         /// <summary>
         /// Propiedad del campo capacidad de kilos 
         /// </summary>

@@ -29,6 +29,7 @@ namespace TransportesCR2
         /// <param name="nombre"></param>
         /// <param name="papellido"></param>
         /// <param name="sapellido"></param>
+        /// <param name="rutaasignada"></param>
         public Conductor(string identificacion, string nombre, string papellido, string sapellido, string rutaasignada)
         {
             _identificacion = identificacion;
